@@ -35,7 +35,7 @@ fun FitmetApp() {
         NavHost(navController = navController, startDestination = "login") {
             composable("login") { LoginScreen(navController, viewModel) }
             composable("register") { RegisterScreen(navController, viewModel) }
-            composable("home") { HomeScreen() }
+            composable("home") { HomeScreen(navController, viewModel) }
         }
     }
 }
