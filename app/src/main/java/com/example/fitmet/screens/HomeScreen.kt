@@ -11,6 +11,8 @@ import com.example.fitmet.viewmodel.UserViewModel
 
 @Composable
 fun HomeScreen(navController: NavController, viewModel: UserViewModel) {
+    val userProfile = viewModel.userProfile.value
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -22,11 +24,29 @@ fun HomeScreen(navController: NavController, viewModel: UserViewModel) {
                 text = "Tervetuloa Fit Met:iin!",
                 style = MaterialTheme.typography.headlineMedium
             )
+
+            if (userProfile != null) {
+                Spacer(modifier = Modifier.height(24.dp))
+                Card(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = "Your Profile",
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Text("Name: ${userProfile.name}")
+                        Text("Age: ${userProfile.age}")
+                        Text("Height: ${userProfile.height} cm")
+                        Text("Weight: ${userProfile.weight} kg")
+                        Text("Gender: ${userProfile.gender}")
+                        Text("Fitness Goal: ${userProfile.fitnessGoal}")
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
                 onClick = {
-                    // Tyhjennetään kirjautumistila ja palataan login-näytölle
                     viewModel.isLoggedIn.value = false
                     navController.navigate("login") {
                         popUpTo("home") { inclusive = true }

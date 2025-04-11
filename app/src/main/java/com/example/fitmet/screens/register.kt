@@ -47,7 +47,9 @@ fun RegisterScreen(navController: NavController, viewModel: UserViewModel) {
             onClick = {
                 viewModel.registeredEmail.value = email
                 viewModel.registeredPassword.value = password
-                navController.popBackStack() // Palaa login-näytölle
+                navController.navigate("profileSetup") {
+                    popUpTo("register") { inclusive = true }
+                }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
