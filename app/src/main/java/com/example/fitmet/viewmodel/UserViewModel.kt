@@ -7,4 +7,10 @@ class UserViewModel : ViewModel() {
     var registeredEmail = mutableStateOf("")
     var registeredPassword = mutableStateOf("")
     var isLoggedIn = mutableStateOf(false)
+
+}
+
+
+class UserDetails(){
+
 }
