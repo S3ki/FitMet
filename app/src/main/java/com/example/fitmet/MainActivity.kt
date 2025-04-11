@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.example.fitmet.screens.*
 import com.example.fitmet.viewmodel.UserViewModel
 import com.example.fitmet.ui.theme.FitMetTheme
