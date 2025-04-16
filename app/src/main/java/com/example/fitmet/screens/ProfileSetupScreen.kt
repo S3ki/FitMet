@@ -131,7 +131,7 @@ fun ProfileSetupScreen(navController: NavController, viewModel: UserViewModel) {
                     gender = selectedGender,
                     fitnessGoal = fitnessGoal
                 )
-                navController.navigate("home") {
+                navController.navigate("Homemain") {
                     popUpTo("profileSetup") { inclusive = true }
                 }
             },

@@ -49,7 +49,7 @@ fun HomeScreen(navController: NavController, viewModel: UserViewModel) {
                 onClick = {
                     viewModel.isLoggedIn.value = false
                     navController.navigate("login") {
-                        popUpTo("home") { inclusive = true }
+                        popUpTo("Homemain") { inclusive = true }
                     }
                 }
             ) {

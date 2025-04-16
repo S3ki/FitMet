@@ -15,12 +15,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fitmet.screens.*
 import com.example.fitmet.viewmodel.UserViewModel
 import com.example.fitmet.ui.theme.FitMetTheme
-import com.google.firebase.FirebaseApp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FirebaseApp.initializeApp(this)
         enableEdgeToEdge()
         setContent {
             FitMetTheme {
@@ -41,6 +39,8 @@ fun FitmetApp() {
             composable("register") { RegisterScreen(navController, viewModel) }
             composable("home") { HomeScreen(navController, viewModel) }
             composable("profileSetup") { ProfileSetupScreen(navController, viewModel) }
+            composable("Homemain") { HomeMainScreen()  }
+
         }
     }
 }
