@@ -2,19 +2,11 @@ package com.example.fitmet.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-
-data class UserProfile(
-    val name: String,
-    val age: Int,
-    val height: Int,
-    val weight: Int,
-    val gender: String,
-    val fitnessGoal: String
-)
+import com.example.fitmet.models.UserProfile
 
 class UserViewModel : ViewModel() {
+    var userProfile = mutableStateOf<UserProfile?>(null)
     var registeredEmail = mutableStateOf("")
     var registeredPassword = mutableStateOf("")
     var isLoggedIn = mutableStateOf(false)
-    var userProfile = mutableStateOf<UserProfile?>(null)
 }
