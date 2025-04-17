@@ -33,13 +33,14 @@ fun FitmetApp() {
     val navController: NavHostController = rememberNavController()
     val viewModel: UserViewModel = viewModel()
 
+
     Surface(color = MaterialTheme.colorScheme.background) {
         NavHost(navController = navController, startDestination = "login") {
             composable("login") { LoginScreen(navController, viewModel) }
             composable("register") { RegisterScreen(navController, viewModel) }
             composable("home") { HomeScreen(navController, viewModel) }
             composable("profileSetup") { ProfileSetupScreen(navController, viewModel) }
-            composable("Homemain") { HomeMainScreen()  }
+            composable("profileDetail") { ProfileDetailScreen(navController, viewModel) }
 
         }
     }
