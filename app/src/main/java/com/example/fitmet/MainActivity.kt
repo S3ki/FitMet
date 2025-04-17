@@ -41,7 +41,7 @@ fun FitmetApp() {
             composable("home") { HomeScreen(navController, viewModel) }
             composable("profileSetup") { ProfileSetupScreen(navController, viewModel) }
             composable("profileDetail") { ProfileDetailScreen(navController, viewModel) }
-
+            composable("Homemain") { HomeMainScreen("Muha", viewModel = viewModel, navController = navController)  }
         }
     }
 }
