@@ -6,9 +6,7 @@ import kotlinx.coroutines.flow.Flow
  * Tekija @Sakariye
  */
 interface UserRepository {
-    /**
-     * Retrieve all the Users from the the given data source.
-     */
+
     fun getAllUsersStream(): Flow<List<User>>
 
 
