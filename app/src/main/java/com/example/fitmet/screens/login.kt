@@ -49,7 +49,7 @@ fun LoginScreen(navController: NavController, viewModel: UserViewModel) {
                     password == viewModel.registeredPassword.value
                 ) {
                     viewModel.isLoggedIn.value = true
-                    navController.navigate("home") {
+                    navController.navigate("Homemain") {
                         popUpTo("login") { inclusive = true }
                     }
                 }
