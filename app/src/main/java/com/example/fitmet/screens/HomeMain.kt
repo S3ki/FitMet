@@ -2,10 +2,10 @@ package com.example.fitmet.screens
 
 
 
+import StepCounter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -37,6 +39,15 @@ fun HomeMainScreen(userName: String = "Muha", viewModel: UserViewModel ,navContr
 
     val userProfile = viewModel.userProfile.value
     var showProfileDropdown by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+    var steps by remember { mutableStateOf<Long?>(null) }
+
+    LaunchedEffect(Unit) {
+        val counter = StepCounter(context)
+        steps = counter.steps()
+    }
+
 
 
     Box(
@@ -113,7 +124,7 @@ fun HomeMainScreen(userName: String = "Muha", viewModel: UserViewModel ,navContr
             modifier = Modifier.fillMaxWidth()
         ) {
             StatBox(icon = Icons.Filled.AccessTime, label = "0 min", subtitle = "Workout")
-            StatBox(icon = Icons.Filled.DirectionsWalk, label = "0", subtitle = "Steps")
+            StatBox(icon = Icons.Filled.DirectionsWalk, label = "$steps", subtitle = "Steps")
             StatBox(icon = Icons.Filled.LocalFireDepartment, label = "0", subtitle = "Calories")
         }
 

@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-
 }
 
 android {
@@ -73,5 +72,15 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.6.1")
 
     // Lifecycle ViewModel
+
+    //Room
+
+    val room_version = "2.6.1"
+
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler)
+
+   // ksp("androidx.room:room-compiler:$room_version")
 
 }
