@@ -11,15 +11,15 @@ import androidx.annotation.RequiresApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import com.example.fitmet.screens.*
 import com.example.fitmet.viewmodel.UserViewModel
+import com.example.fitmet.viewmodel.ThemeViewModel
 import com.example.fitmet.ui.theme.FitMetTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,8 +31,8 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            FitMetTheme {
-                FitmetApp()
+            FitMetTheme(darkTheme = viewModel<ThemeViewModel>().isDarkMode.value) {
+                FitmetApp()  // Appin kutsu
             }
         }
     }
@@ -41,21 +41,20 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun FitmetApp() {
     val navController: NavHostController = rememberNavController()
-    val viewModel: UserViewModel = viewModel()
-
+    val userViewModel: UserViewModel = viewModel()
+    val themeViewModel: ThemeViewModel = viewModel() // ViewModel teeman hallintaan
 
     Surface(color = MaterialTheme.colorScheme.background) {
         NavHost(navController = navController, startDestination = "login") {
-            composable("login") { LoginScreen(navController, viewModel) }
-            composable("register") { RegisterScreen(navController, viewModel) }
-            composable("home") { HomeScreen(navController, viewModel) }
-            composable("profileSetup") { ProfileSetupScreen(navController, viewModel) }
-            composable("profileDetail") { ProfileDetailScreen(navController, viewModel) }
-            composable("Homemain") { HomeMainScreen("Muha", viewModel = viewModel, navController = navController)  }
+            composable("login") { LoginScreen(navController, userViewModel) }
+            composable("register") { RegisterScreen(navController, userViewModel) }
+            composable("profileSetup") { ProfileSetupScreen(navController, userViewModel) }
+            composable("profileDetail") { ProfileDetailScreen(navController, userViewModel) }
+            composable("Homemain") { HomeMain(navController, userViewModel, themeViewModel) }
+            composable("splash") { SplashScreen(navController) }
         }
     }
 }
-
 
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 private fun checkPermissions(context: Context, activity: MainActivity) {
@@ -68,13 +67,12 @@ private fun checkPermissions(context: Context, activity: MainActivity) {
                 android.Manifest.permission.FOREGROUND_SERVICE_HEALTH
             ),
             1
-        )}
-
+        )
+    }
 }
 
-
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
- fun hasRequiredPermissions(context: Context): Boolean {
+fun hasRequiredPermissions(context: Context): Boolean {
     val activityRecognitionPermission = ContextCompat.checkSelfPermission(
         context,
         android.Manifest.permission.ACTIVITY_RECOGNITION

@@ -35,7 +35,8 @@ fun ProfileDetailScreen(navController: NavController, viewModel: UserViewModel) 
                     .padding(innerPadding)
                     .padding(24.dp)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text("Name: ${userProfile.name}", fontWeight = FontWeight.Bold)
                 Text("Age: ${userProfile.age}")
@@ -45,6 +46,16 @@ fun ProfileDetailScreen(navController: NavController, viewModel: UserViewModel) 
                 Text("Fitness Goal: ${userProfile.fitnessGoal}")
                 Text("BMI: %.2f".format(userProfile.bmi))
                 Text("BMI Category: ${userProfile.bmiCategory}")
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                // Selkeä painike takaisin etusivulle
+                Button(
+                    onClick = { navController.navigate("Homemain") },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Takaisin etusivulle")
+                }
             }
         } else {
             Box(

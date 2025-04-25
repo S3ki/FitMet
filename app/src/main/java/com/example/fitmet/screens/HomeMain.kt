@@ -1,170 +1,106 @@
 package com.example.fitmet.screens
 
-
-
-import StepCounter
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.DirectionsWalk
-import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.fitmet.R
 import com.example.fitmet.viewmodel.UserViewModel
+import com.example.fitmet.viewmodel.ThemeViewModel  // Lisätty ThemeViewModel
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeMainScreen(userName: String = "Muha", viewModel: UserViewModel ,navController: NavController) {
+fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewModel: ThemeViewModel) {
+    val user = viewModel.userProfile.value
 
-    val userProfile = viewModel.userProfile.value
-    var showProfileDropdown by remember { mutableStateOf(false) }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Hei, ${user?.name ?: "Käyttäjä"} 👋",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
+                actions = {
+                    IconButton(onClick = {
+                        navController.navigate("profileDetail")
+                    }) {
+                        Icon(Icons.Default.Person, contentDescription = "Profiili")
+                    }
 
-    val context = LocalContext.current
-    var steps by remember { mutableStateOf<Long?>(null) }
+                    // Teeman vaihtaminen
+                    IconButton(onClick = {
+                        themeViewModel.isDarkMode.value = !themeViewModel.isDarkMode.value
+                    }) {
+                        Icon(
+                            imageVector = if (themeViewModel.isDarkMode.value) Icons.Default.LightMode else Icons.Default.DarkMode,
+                            contentDescription = "Vaihda teema"
+                        )
+                    }
 
-    LaunchedEffect(Unit) {
-        val counter = StepCounter(context)
-        steps = counter.steps()
-    }
-
-
-
-    Box(
-        modifier = Modifier
-            .padding(16.dp)
-    ) {
-        IconButton(onClick = { showProfileDropdown = true }) {
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = "Profile",
-                tint = MaterialTheme.colorScheme.secondary
+                    IconButton(onClick = {
+                        viewModel.isLoggedIn.value = false
+                        navController.navigate("login") {
+                            popUpTo("Homemain") { inclusive = true }
+                        }
+                    }) {
+                        Icon(Icons.Default.ExitToApp, contentDescription = "Uloskirjautuminen")
+                    }
+                }
             )
         }
-
-        DropdownMenu(
-            expanded = showProfileDropdown,
-            onDismissRequest = { showProfileDropdown = false },
-            modifier = Modifier.width(IntrinsicSize.Max)
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(24.dp)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (userProfile != null) {
-                DropdownMenuItem(
-                    text = { Text("View Profile", fontWeight = FontWeight.Medium) },
-                    onClick = {
-                        showProfileDropdown = false
-                        navController.navigate("profileDetail")
-                    }
-                )
-                DropdownMenuItem(
-                    text = { Text("Edit Profile") },
-                    onClick = {
-                        showProfileDropdown = false
-                        navController.navigate("profileSetup")
-                    }
-                )
-            } else {
-                DropdownMenuItem(
-                    text = { Text("Create Profile") },
-                    onClick = {
-                        showProfileDropdown = false
-                        navController.navigate("profileSetup")
-                    }
-                )
-            }
+            Text(
+                text = "Päivän Yhteenveto",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
+
+            StatCard("🔥 Kalorit", "1800 kcal")
+            StatCard("👟 Askeleet", "7500")
+            StatCard("⏱️ Aktiivinen Aika", "45 min")
         }
     }
+}
 
-    Column(
+@Composable
+fun StatCard(title: String, value: String) {
+    Card(
         modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFEFFAF0))
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth()
+            .height(120.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+        elevation = CardDefaults.cardElevation(6.dp),
+        shape = MaterialTheme.shapes.extraLarge
     ) {
-        // Profiilikuva
-        Image(
-            painter = painterResource(id = R.drawable.intia), // Lisää profiilikuva drawable-kansioon
-            contentDescription = "Profile picture",
+        Column(
             modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape)
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Tervehdys
-        Text(text = "Hi, $userName!", style = MaterialTheme.typography.headlineSmall)
-        Text(text = "Ready to crush your goals today?")
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Tilastot
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            modifier = Modifier.fillMaxWidth()
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            StatBox(icon = Icons.Filled.AccessTime, label = "0 min", subtitle = "Workout")
-            StatBox(icon = Icons.Filled.DirectionsWalk, label = "$steps", subtitle = "Steps")
-            StatBox(icon = Icons.Filled.LocalFireDepartment, label = "0", subtitle = "Calories")
+            Text(title, style = MaterialTheme.typography.titleMedium)
+            Text(value, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Edistymispalkki
-        Text("Your goal", style = MaterialTheme.typography.titleMedium)
-        CircularProgressIndicator(progress = 0f, strokeWidth = 8.dp)
-        Text("75%", fontWeight = FontWeight.Bold)
-        Text("Almost there!")
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Saavutukset
-        Text("Achievements", style = MaterialTheme.typography.titleMedium)
-        BadgeItem(text = "25K steps badge!")
-    }
-}
-
-@Composable
-fun StatBox(icon: ImageVector, label: String, subtitle: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Icon(icon, contentDescription = subtitle, tint = Color.Black)
-        Text(label, fontWeight = FontWeight.Bold)
-        Text(subtitle)
-    }
-}
-
-@Composable
-fun BadgeItem(text: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = Modifier
-                .size(48.dp)
-                .background(Color(0xFFFFD700), shape = CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("25K", fontWeight = FontWeight.Bold)
-        }
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(text)
     }
 }

@@ -9,64 +9,67 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.fitmet.viewmodel.UserViewModel
+import androidx.compose.ui.Alignment
+
 
 @Composable
 fun LoginScreen(navController: NavController, viewModel: UserViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = "Login", style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                if (email == viewModel.registeredEmail.value &&
-                    password == viewModel.registeredPassword.value
-                ) {
-                    viewModel.isLoggedIn.value = true
-                    navController.navigate("Homemain") {
-                        popUpTo("login") { inclusive = true }
-                    }
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Login")
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "Don't have an account? Register",
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Card(
             modifier = Modifier
-                .clickable { navController.navigate("register") }
-                .padding(top = 8.dp),
-            color = MaterialTheme.colorScheme.primary
-        )
+                .fillMaxWidth(0.9f)
+                .padding(16.dp),
+            elevation = CardDefaults.cardElevation(8.dp),
+            shape = MaterialTheme.shapes.extraLarge
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text("Kirjaudu sisään", style = MaterialTheme.typography.headlineMedium)
+
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text("Sähköposti") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Salasana") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Button(
+                    onClick = {
+                        if (email == viewModel.registeredEmail.value &&
+                            password == viewModel.registeredPassword.value
+                        ) {
+                            viewModel.isLoggedIn.value = true
+                            navController.navigate("Homemain") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Kirjaudu")
+                }
+
+                Text(
+                    text = "Eikö tiliä? Luo uusi",
+                    modifier = Modifier
+                        .clickable { navController.navigate("register") }
+                        .padding(top = 8.dp),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
     }
 }

@@ -9,61 +9,75 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.fitmet.viewmodel.UserViewModel
+import androidx.compose.ui.Alignment
+
 
 @Composable
 fun RegisterScreen(navController: NavController, viewModel: UserViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val isEmailValid = remember(email) { email.contains("@") && email.contains(".") }
+    val isPasswordValid = remember(password) { password.length >= 6 }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = "Register", style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Password") },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                viewModel.registeredEmail.value = email
-                viewModel.registeredPassword.value = password
-                navController.navigate("profileSetup") {
-                    popUpTo("register") { inclusive = true }
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Register")
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "Already have an account? Login",
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Card(
             modifier = Modifier
-                .clickable { navController.popBackStack() }
-                .padding(top = 8.dp),
-            color = MaterialTheme.colorScheme.primary
-        )
+                .fillMaxWidth(0.9f)
+                .padding(16.dp),
+            elevation = CardDefaults.cardElevation(8.dp),
+            shape = MaterialTheme.shapes.extraLarge
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text("Rekisteröidy", style = MaterialTheme.typography.headlineMedium)
+
+                OutlinedTextField(
+                    value = email,
+                    onValueChange = { email = it },
+                    label = { Text("Sähköposti") },
+                    isError = !isEmailValid,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                if (!isEmailValid) {
+                    Text("Anna kelvollinen sähköposti", color = MaterialTheme.colorScheme.error)
+                }
+
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Salasana") },
+                    isError = !isPasswordValid,
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                if (!isPasswordValid) {
+                    Text("Salasanan on oltava vähintään 6 merkkiä", color = MaterialTheme.colorScheme.error)
+                }
+
+                Button(
+                    onClick = {
+                        viewModel.registeredEmail.value = email
+                        viewModel.registeredPassword.value = password
+                        navController.navigate("profileSetup") {
+                            popUpTo("register") { inclusive = true }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = isEmailValid && isPasswordValid
+                ) {
+                    Text("Luo tili")
+                }
+
+                Text(
+                    text = "Onko sinulla jo tili? Kirjaudu sisään",
+                    modifier = Modifier
+                        .clickable { navController.popBackStack() }
+                        .padding(top = 8.dp),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
     }
 }

@@ -29,6 +29,12 @@ fun ProfileSetupScreen(navController: NavController, viewModel: UserViewModel) {
     val genderOptions = listOf("Male", "Female", "Other")
     val fitnessGoals = listOf("Weight Loss", "Muscle Gain", "Maintenance", "Endurance", "Flexibility")
 
+    val isNameValid = remember(name) { name.matches(Regex("^[A-Za-z ]+$")) }
+    val isAgeValid = remember(age) { age.all { it.isDigit() } && age.toIntOrNull() != null && age.toInt() in 18..100 }
+    val isHeightValid = remember(height) { height.all { it.isDigit() } && height.toIntOrNull() != null }
+    val isWeightValid = remember(weight) { weight.all { it.isDigit() } && weight.toIntOrNull() != null }
+    val isFormValid = name.isNotBlank() && isNameValid && isAgeValid && isHeightValid && isWeightValid && selectedGender.isNotBlank() && fitnessGoal.isNotBlank()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,8 +56,12 @@ fun ProfileSetupScreen(navController: NavController, viewModel: UserViewModel) {
             value = name,
             onValueChange = { name = it },
             label = { Text("Full Name") },
+            isError = !isNameValid,
             modifier = Modifier.fillMaxWidth()
         )
+        if (!isNameValid) {
+            Text("Name cannot contain numbers", color = MaterialTheme.colorScheme.error)
+        }
 
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             OutlinedTextField(
@@ -59,6 +69,7 @@ fun ProfileSetupScreen(navController: NavController, viewModel: UserViewModel) {
                 onValueChange = { if (it.all { char -> char.isDigit() }) age = it },
                 label = { Text("Age") },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                isError = !isAgeValid,
                 modifier = Modifier.weight(1f)
             )
 
@@ -67,6 +78,7 @@ fun ProfileSetupScreen(navController: NavController, viewModel: UserViewModel) {
                 onValueChange = { if (it.all { char -> char.isDigit() }) height = it },
                 label = { Text("Height (cm)") },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                isError = !isHeightValid,
                 modifier = Modifier.weight(1f)
             )
 
@@ -75,6 +87,7 @@ fun ProfileSetupScreen(navController: NavController, viewModel: UserViewModel) {
                 onValueChange = { if (it.all { char -> char.isDigit() }) weight = it },
                 label = { Text("Weight (kg)") },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                isError = !isWeightValid,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -136,8 +149,7 @@ fun ProfileSetupScreen(navController: NavController, viewModel: UserViewModel) {
                 }
             },
             modifier = Modifier.fillMaxWidth(),
-            enabled = name.isNotBlank() && age.isNotBlank() && height.isNotBlank() &&
-                    weight.isNotBlank() && selectedGender.isNotBlank() && fitnessGoal.isNotBlank()
+            enabled = isFormValid
         ) {
             Text("Save Profile")
         }
