@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
  * Tekija @Sakariye
  */
 
-@Entity(tableName = "User")
+@Entity(tableName = "user")
 data class User(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
