@@ -5,10 +5,9 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Tekija @Sakariye
  */
-class OfflineRepository : UserRepository {
-    override fun getAllUsersStream(): Flow<List<User>> {
-        TODO("Not yet implemented")
-    }
+class OfflineRepository(val userDao: UserDao) : UserRepository {
+
+    override fun getAllUsersStream(): Flow<List<User>> = userDao.getAllUsers()
 
     override fun getUserStream(id: Int): Flow<User?> {
         TODO("Not yet implemented")

@@ -11,7 +11,8 @@ import androidx.room.PrimaryKey
 data class User(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val name: String = "",
+    val name: String,
+    val password: String,
     // Maybe list of badges object here later
     // and some other info
 ){
