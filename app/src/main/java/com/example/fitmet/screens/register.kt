@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.fitmet.viewmodel.UserViewModel
 import androidx.compose.ui.Alignment
-
+import androidx.compose.ui.text.font.FontWeight
 
 @Composable
 fun RegisterScreen(navController: NavController, viewModel: UserViewModel) {
@@ -24,21 +24,22 @@ fun RegisterScreen(navController: NavController, viewModel: UserViewModel) {
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .padding(16.dp),
-            elevation = CardDefaults.cardElevation(8.dp),
-            shape = MaterialTheme.shapes.extraLarge
+            elevation = CardDefaults.cardElevation(10.dp),
+            shape = MaterialTheme.shapes.medium
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text("Rekisteröidy", style = MaterialTheme.typography.headlineMedium)
+                Text("Rekisteröidy", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary)
 
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
                     label = { Text("Sähköposti") },
                     isError = !isEmailValid,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium
                 )
                 if (!isEmailValid) {
                     Text("Anna kelvollinen sähköposti", color = MaterialTheme.colorScheme.error)
@@ -50,7 +51,8 @@ fun RegisterScreen(navController: NavController, viewModel: UserViewModel) {
                     label = { Text("Salasana") },
                     isError = !isPasswordValid,
                     visualTransformation = PasswordVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.medium
                 )
                 if (!isPasswordValid) {
                     Text("Salasanan on oltava vähintään 6 merkkiä", color = MaterialTheme.colorScheme.error)
@@ -65,9 +67,10 @@ fun RegisterScreen(navController: NavController, viewModel: UserViewModel) {
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = isEmailValid && isPasswordValid
+                    enabled = isEmailValid && isPasswordValid,
+                    shape = MaterialTheme.shapes.large
                 ) {
-                    Text("Luo tili")
+                    Text("Luo tili", fontWeight = FontWeight.Bold)
                 }
 
                 Text(

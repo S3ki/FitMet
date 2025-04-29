@@ -38,7 +38,6 @@ fun SplashScreen(navController: NavController) {
             exit = fadeOut()
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                // Voit käyttää myös logokuvaa, jos sinulla on
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,

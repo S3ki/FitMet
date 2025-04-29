@@ -12,7 +12,8 @@ data class UserProfile(
     val weight: Int = 0,       // in kg
     val gender: String = "",   // "Male", "Female", "Other"
     val fitnessGoal: String = "", // e.g. "Weight Loss", "Muscle Gain"
-    val lastUpdated: Date = Timestamp.from(Instant.now()) // Using Java Timestamp
+    val lastUpdated: Date = Timestamp.from(Instant.now()), // Using Java Timestamp
+    val distanceCovered: Int = 0 // Lisätty kenttä kuljetulle matkalle (kilometreinä)
 ) {
     val bmi: Double
         get() = calculateBmi()

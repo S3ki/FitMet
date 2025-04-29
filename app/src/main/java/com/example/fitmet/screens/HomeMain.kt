@@ -1,5 +1,9 @@
 package com.example.fitmet.screens
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
@@ -8,6 +12,7 @@ import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitmet.viewmodel.UserViewModel
-import com.example.fitmet.viewmodel.ThemeViewModel  // Lisätty ThemeViewModel
+import com.example.fitmet.viewmodel.ThemeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +41,10 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
                     IconButton(onClick = {
                         navController.navigate("profileDetail")
                     }) {
-                        Icon(Icons.Default.Person, contentDescription = "Profiili")
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Profiili"
+                        )
                     }
 
                     // Teeman vaihtaminen
@@ -55,7 +63,10 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
                             popUpTo("Homemain") { inclusive = true }
                         }
                     }) {
-                        Icon(Icons.Default.ExitToApp, contentDescription = "Uloskirjautuminen")
+                        Icon(
+                            imageVector = Icons.Default.ExitToApp,
+                            contentDescription = "Uloskirjautuminen"
+                        )
                     }
                 }
             )
@@ -76,20 +87,47 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
             )
 
             StatCard("🔥 Kalorit", "1800 kcal")
-            StatCard("👟 Askeleet", "7500")
-            StatCard("⏱️ Aktiivinen Aika", "45 min")
+
+            StatCard(
+                title = "👟 Askeleet",
+                value = "7500",
+                onClick = {
+                    navController.navigate("steps") // Tämä vie StepStatisticsScreeniin
+                }
+            )
+
+            // Aktiivisen ajan kortti, joka vie AchievementScreen:iin
+            StatCard(
+                title = "⏱️ Aktiivinen Aika",
+                value = "45 min",
+                onClick = {
+                    navController.navigate("achievements")
+                }
+            )
         }
     }
 }
 
 @Composable
-fun StatCard(title: String, value: String) {
+fun StatCard(title: String, value: String, onClick: (() -> Unit)? = null) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed = interactionSource.collectIsPressedAsState()
+    val elevation = animateDpAsState(targetValue = if (isPressed.value) 2.dp else 8.dp)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-        elevation = CardDefaults.cardElevation(6.dp),
+            .height(120.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,  // Ei oletusanimaatiota, vaan meidän oma
+                enabled = onClick != null
+            ) { onClick?.invoke() },
+        colors = CardDefaults.cardColors(
+            containerColor = if (isPressed.value) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+            else MaterialTheme.colorScheme.surfaceVariant
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = elevation.value),
         shape = MaterialTheme.shapes.extraLarge
     ) {
         Column(
@@ -99,8 +137,18 @@ fun StatCard(title: String, value: String) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(title, style = MaterialTheme.typography.titleMedium)
-            Text(value, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                text = value,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
+
