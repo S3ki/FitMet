@@ -51,6 +51,8 @@ fun FitmetApp() {
             composable("profileSetup") { ProfileSetupScreen(navController, userViewModel) }
             composable("profileDetail") { ProfileDetailScreen(navController, userViewModel) }
             composable("Homemain") { HomeMain(navController, userViewModel, themeViewModel) }
+            composable("achievements") { AchievementScreen(navController, userViewModel) } // Uusi navigointireitti
+            composable("steps") { StepStatisticsScreen(navController) }
             composable("splash") { SplashScreen(navController) }
         }
     }
