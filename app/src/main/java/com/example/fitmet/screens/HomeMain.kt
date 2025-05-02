@@ -1,6 +1,10 @@
 package com.example.fitmet.screens
 
 import StepCounter
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
@@ -83,7 +87,8 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
                 .padding(24.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+
         ) {
             Text(
                 text = "Päivän Yhteenveto",
@@ -91,22 +96,43 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
                 fontWeight = FontWeight.Bold
             )
 
-            StatCard("🔥 Kalorit", "1800 kcal")
-            StatCard("👟 Askeleet", (steps ?: 0).toString())
-            StatCard("⏱️ Aktiivinen Aika", "45 min")
+            StatCard("🔥 Kalorit", "1800 kcal", )
 
+            StatCard("👟 Askeleet", (steps ?: 0).toString(), onClick = {
+                navController.navigate("steps") // Tämä vie StepStatisticsScreeniin
+            })
+
+            StatCard("⏱️ Saavutukset", "10 kpl", onClick = {
+                navController.navigate("achievements")
+            })
+
+            Button(onClick = {
+                viewModel.registering()
+            }) { Text("DB test") }
         }
     }
 }
 
 @Composable
-fun StatCard(title: String, value: String) {
+fun StatCard(title: String, value: String, onClick: (() -> Unit)? = null) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed = interactionSource.collectIsPressedAsState()
+    val elevation = animateDpAsState(targetValue = if (isPressed.value) 2.dp else 8.dp)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-        elevation = CardDefaults.cardElevation(6.dp),
+            .height(120.dp)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,  // Ei oletusanimaatiota, vaan meidän oma
+                enabled = onClick != null
+            ) { onClick?.invoke() },
+        colors = CardDefaults.cardColors(
+            containerColor = if (isPressed.value) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+            else MaterialTheme.colorScheme.surfaceVariant
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = elevation.value),
         shape = MaterialTheme.shapes.extraLarge
     ) {
         Column(
@@ -116,8 +142,17 @@ fun StatCard(title: String, value: String) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(title, style = MaterialTheme.typography.titleMedium)
-            Text(value, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                text = value,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }

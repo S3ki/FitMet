@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
@@ -32,6 +33,9 @@ class FitApp : Application() {
             ExistingPeriodicWorkPolicy.KEEP,
             request
         )
+
+    //    val request = OneTimeWorkRequestBuilder<SaveDataWorker>().build()
+      //  WorkManager.getInstance(context).enqueue(request)
     }
 
 }

@@ -26,7 +26,7 @@ data class LevelInfo(val levelNumber: Int, val distance: Int)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AchievementScreen(navController: NavController, viewModel: UserViewModel) {
-    val userProfile = viewModel.userProfile.value
+    val userProfile = viewModel.userProfile
     val progress = userProfile?.distanceCovered ?: 0
 
     Scaffold(

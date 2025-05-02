@@ -14,8 +14,8 @@ class SaveDataWorker(context: Context, params: WorkerParameters) : CoroutineWork
     override suspend fun doWork(): Result {
 
         return try {
-            Log.d("WRK", "OnCreate WorkRequest")
-            stepsRepo.insertSteps(Steps(0,1,"02.05.2025", 23))
+            Log.d("SVD1", "Worker triggered at ${System.currentTimeMillis()}")
+            stepsRepo.insertSteps(Steps(0,1,"02.05.2025", counter.steps().toInt()))
             Result.success()
         } catch (e: Exception) {
             e.printStackTrace()
