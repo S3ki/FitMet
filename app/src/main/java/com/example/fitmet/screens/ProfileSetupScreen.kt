@@ -136,7 +136,7 @@ fun ProfileSetupScreen(navController: NavController, viewModel: UserViewModel) {
 
         Button(
             onClick = {
-                viewModel.userProfile.value = UserProfile(
+                viewModel.userProfile = UserProfile(
                     name = name,
                     age = age.toIntOrNull() ?: 0,
                     height = height.toIntOrNull() ?: 0,
@@ -144,6 +144,7 @@ fun ProfileSetupScreen(navController: NavController, viewModel: UserViewModel) {
                     gender = selectedGender,
                     fitnessGoal = fitnessGoal
                 )
+                viewModel.registering()
                 navController.navigate("Homemain") {
                     popUpTo("profileSetup") { inclusive = true }
                 }

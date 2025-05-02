@@ -58,8 +58,8 @@ fun RegisterScreen(navController: NavController, viewModel: UserViewModel) {
 
                 Button(
                     onClick = {
-                        viewModel.registeredEmail.value = email
-                        viewModel.registeredPassword.value = password
+                        viewModel.registeredEmail = email
+                        viewModel.registeredPassword = password
                         navController.navigate("profileSetup") {
                             popUpTo("register") { inclusive = true }
                         }

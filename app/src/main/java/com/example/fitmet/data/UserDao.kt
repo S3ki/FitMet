@@ -9,8 +9,8 @@ import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 /**
-* Tekija @Sakariye
-*/
+ * Tekija @Sakariye
+ */
 
 @Dao
 interface UserDao {

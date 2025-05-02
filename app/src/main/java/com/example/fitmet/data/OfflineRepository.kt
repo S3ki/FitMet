@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Tekija @Sakariye
  */
-class OfflineRepository(val userDao: UserDao) : UserRepository {
+class OfflineRepository(private val userDao: UserDao) : UserRepository {
 
     override fun getAllUsersStream(): Flow<List<User>> = userDao.getAllUsers()
 
@@ -14,7 +14,7 @@ class OfflineRepository(val userDao: UserDao) : UserRepository {
     }
 
     override suspend fun insertUser(user: User) {
-        TODO("Not yet implemented")
+        userDao.insert(user)
     }
 
     override suspend fun deleteUser(user: User) {

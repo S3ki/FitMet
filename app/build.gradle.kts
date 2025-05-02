@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
+    id("com.google.devtools.ksp")
 
 }
 
@@ -87,5 +87,16 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
 
     ksp("androidx.room:room-compiler:$room_version")
+
+
+
+    val work_version = "2.10.1"
+
+
+
+    // Worker Kotlin + coroutines
+
+    implementation("androidx.work:work-runtime-ktx:$work_version") // latest version as of now
+
 
 }

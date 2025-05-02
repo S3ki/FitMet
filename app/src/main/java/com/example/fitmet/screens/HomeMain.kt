@@ -28,7 +28,7 @@ import com.example.fitmet.viewmodel.ThemeViewModel  // Lisätty ThemeViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewModel: ThemeViewModel) {
-    val user = viewModel.userProfile.value
+    val user = viewModel.userProfile
 
     val context = LocalContext.current
     var steps by remember { mutableStateOf<Long?>(null) }
@@ -92,8 +92,9 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
             )
 
             StatCard("🔥 Kalorit", "1800 kcal")
-            StatCard("👟 Askeleet", "$steps")
+            StatCard("👟 Askeleet", (steps ?: 0).toString())
             StatCard("⏱️ Aktiivinen Aika", "45 min")
+
         }
     }
 }

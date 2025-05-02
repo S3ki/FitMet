@@ -8,9 +8,10 @@ import androidx.room.RoomDatabase
  * Tekija @Sakariye
  */
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Steps::class], version = 2, exportSchema = false)
 abstract class FitDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun stepsDao(): StepsDao
 
     companion object {
 

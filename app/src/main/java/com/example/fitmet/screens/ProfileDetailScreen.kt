@@ -15,7 +15,7 @@ import com.example.fitmet.viewmodel.UserViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileDetailScreen(navController: NavController, viewModel: UserViewModel) {
-    val userProfile = viewModel.userProfile.value
+    val userProfile = viewModel.userProfile
 
     Scaffold(
         topBar = {

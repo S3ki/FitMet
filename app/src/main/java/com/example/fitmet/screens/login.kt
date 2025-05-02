@@ -48,8 +48,8 @@ fun LoginScreen(navController: NavController, viewModel: UserViewModel) {
 
                 Button(
                     onClick = {
-                        if (email == viewModel.registeredEmail.value &&
-                            password == viewModel.registeredPassword.value
+                        if (email == viewModel.registeredEmail &&
+                            password == viewModel.registeredPassword
                         ) {
                             viewModel.isLoggedIn.value = true
                             navController.navigate("Homemain") {
@@ -69,6 +69,7 @@ fun LoginScreen(navController: NavController, viewModel: UserViewModel) {
                         .padding(top = 8.dp),
                     color = MaterialTheme.colorScheme.primary
                 )
+
             }
         }
     }
