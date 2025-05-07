@@ -20,14 +20,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitmet.viewmodel.UserViewModel
-import com.example.fitmet.viewmodel.ThemeViewModel  // Lisätty ThemeViewModel
+import com.example.fitmet.viewmodel.ThemeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,6 +34,8 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
 
     val context = LocalContext.current
     var steps by remember { mutableStateOf<Long?>(null) }
+
+
 
     LaunchedEffect(Unit) {
         val counter = StepCounter(context)
@@ -70,7 +70,7 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
                     }
 
                     IconButton(onClick = {
-                        viewModel.isLoggedIn.value = false
+                        viewModel.isLoggedIn = false
                         navController.navigate("login") {
                             popUpTo("Homemain") { inclusive = true }
                         }
@@ -96,10 +96,12 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
                 fontWeight = FontWeight.Bold
             )
 
+            // UI Kortit
+
             StatCard("🔥 Kalorit", "1800 kcal", )
 
             StatCard("👟 Askeleet", (steps ?: 0).toString(), onClick = {
-                navController.navigate("steps") // Tämä vie StepStatisticsScreeniin
+                navController.navigate("steps")
             })
 
             StatCard("⏱️ Saavutukset", "10 kpl", onClick = {

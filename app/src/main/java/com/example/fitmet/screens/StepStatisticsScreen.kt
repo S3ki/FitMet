@@ -1,5 +1,6 @@
 package com.example.fitmet.screens
 
+import android.content.Context
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -12,7 +13,13 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,7 +104,6 @@ fun StepStatisticsScreen(navController: NavController) {
                                 label = "starAnimation"
                             )
 
-                            // Käytetään fontSize-ominaisuutta suoraan, koska h4 ei ole määritelty
                             Text(
                                 text = "🌟",
                                 fontSize = 30.sp, // Asetetaan fonttikoko suoraan
@@ -111,6 +117,28 @@ fun StepStatisticsScreen(navController: NavController) {
             }
 
             Spacer(modifier = Modifier.height(80.dp))
+
         }
     }
+}
+
+@Composable
+fun ShowLineGraph(values: List<Entry>) {
+    AndroidView(
+        modifier = Modifier.fillMaxSize(),
+        factory = { context: Context ->
+            val view = LineChart(context)
+            view.legend.isEnabled = false
+            val data = LineData(LineDataSet(values, "steps"))
+            val desc = Description()
+            desc.text = "Steps this week"
+            view.description = desc;
+            view.data = data
+            view // return the view
+        },
+        update = { view ->
+            // Update the view
+            view.invalidate()
+        }
+    )
 }

@@ -29,4 +29,8 @@ interface UserDao {
 
     @Query("SELECT * from user")
     fun getAllUsers(): Flow<List<User>>
+
+    @Query("SELECT * FROM user WHERE username = :username AND password = :password LIMIT 1")
+    suspend fun getUserForLogin(username: String, password: String): User?
+
 }

@@ -5,7 +5,6 @@ import java.time.Instant
 import java.util.Date
 
 data class UserProfile(
-    val userId: String = "",
     val name: String = "",
     val age: Int = 0,
     val height: Int = 0,       // in cm

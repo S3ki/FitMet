@@ -48,10 +48,10 @@ fun LoginScreen(navController: NavController, viewModel: UserViewModel) {
 
                 Button(
                     onClick = {
-                        if (email == viewModel.registeredEmail &&
-                            password == viewModel.registeredPassword
-                        ) {
-                            viewModel.isLoggedIn.value = true
+                        viewModel.registeredEmail = email
+                        viewModel.registeredPassword = password
+                        viewModel.login()
+                        if (viewModel.isLoggedIn) {
                             navController.navigate("Homemain") {
                                 popUpTo("login") { inclusive = true }
                             }

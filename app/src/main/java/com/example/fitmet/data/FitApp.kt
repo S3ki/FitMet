@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit
 class FitApp : Application() {
     companion object {
         lateinit var appContext: Context
-    }
+        lateinit var currentUser: User
+        }
 
     override fun onCreate() {
         super.onCreate()
@@ -25,7 +26,7 @@ class FitApp : Application() {
     }
 
     private fun scheduleDailyWorker(context: Context) {
-        val request = PeriodicWorkRequestBuilder<SaveDataWorker>(20, TimeUnit.MINUTES)
+        val request = PeriodicWorkRequestBuilder<SaveDataWorker>(24, TimeUnit.HOURS)
             .build()
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(

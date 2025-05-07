@@ -99,5 +99,7 @@ dependencies {
 
     implementation("androidx.work:work-runtime-ktx:$work_version") // latest version as of now
 
+    // MPAndroid Charts
+    implementation(libs.mpandroidchart)
 
 }
