@@ -50,7 +50,7 @@ fun HomeMain(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Hei, ${user?.name ?: "Käyttäjä"} 👋",
+                        text = "Hei, ${user.name ?: "Käyttäjä"} 👋",
                         style = MaterialTheme.typography.titleLarge
                     )
                 },
