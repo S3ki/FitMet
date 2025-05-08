@@ -11,7 +11,7 @@ class StepsRepository(private val stepsDao: StepsDao) {
         stepsDao.insertStep(steps)
     }
 
-     fun getAllStepsFromUser(user: User) : Flow<List<Steps>> {
-        return stepsDao.getStepsForUser(user.id)
+     fun getAllStepsFromUser(userId: Int) : Flow<List<Steps>> {
+        return stepsDao.getStepsForUser(userId)
     }
 }

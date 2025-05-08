@@ -4,15 +4,21 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.fitmet.data.Achievement
 import com.example.fitmet.data.FitDatabase
 import com.example.fitmet.data.OfflineRepository
+import com.example.fitmet.data.Steps
+import com.example.fitmet.data.StepsRepository
 import com.example.fitmet.data.User
 import com.example.fitmet.models.UserProfile
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
-    private val offlineRepo = OfflineRepository(FitDatabase.getDatabase().userDao())
-    val allUsers = offlineRepo.getAllUsersStream()
+    private val offlineRepo = OfflineRepository(FitDatabase.getDatabase().userDao(), FitDatabase.getDatabase().achievementDao())
+    private val stepsRepo = StepsRepository(FitDatabase.getDatabase().stepsDao())
+
     lateinit var userProfile: UserProfile
     var currentUser : User? = null
     var registeredEmail = ""
@@ -20,9 +26,17 @@ class UserViewModel : ViewModel() {
     var isLoggedIn = false
 
 
-    fun login(){
+    fun getStepForUser(userId : Int) : Flow<List<Steps>> {
+       return stepsRepo.getAllStepsFromUser(userId)
+    }
+
+    fun getAchievementsForUser(userId: Int): Flow<List<Achievement>>{
+        return offlineRepo.getAllAchievementsFromUser(userId)
+    }
+
+    fun login(username: String, password: String){
         viewModelScope.launch {
-           val user = offlineRepo.login(registeredEmail, registeredPassword)
+           val user = offlineRepo.login(username, password)
             if (user != null) {
                 isLoggedIn = true
                 userProfile = UserProfile(
@@ -36,10 +50,15 @@ class UserViewModel : ViewModel() {
                 currentUser = user
                 // Tallentaa nykyisen käyttäjän id SharedPref
                 offlineRepo.saveCurrentUserId(user.id)
+//                offlineRepo.insertAchievement(Achievement(0,user.id,true, 2, "Walk 300 Steps"))
             } else {
                 Log.d("UserD", "Current user is null")
             }
         }
+    }
+
+    fun logout(){
+        offlineRepo.clearCurrentUserId()
     }
 
      fun registering(){

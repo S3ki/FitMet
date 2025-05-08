@@ -35,8 +35,8 @@ class FitApp : Application() {
             request
         )
 
-    //    val request = OneTimeWorkRequestBuilder<SaveDataWorker>().build()
-      //  WorkManager.getInstance(context).enqueue(request)
+//        val request = OneTimeWorkRequestBuilder<SaveDataWorker>().build()
+//        WorkManager.getInstance(context).enqueue(request)
     }
 
 }

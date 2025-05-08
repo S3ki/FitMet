@@ -29,7 +29,6 @@ class MainActivity : ComponentActivity() {
 
         checkPermissions(this, this)
 
-        enableEdgeToEdge()
         setContent {
             FitMetTheme(darkTheme = viewModel<ThemeViewModel>().isDarkMode.value) {
                 FitmetApp()  // Appin kutsu
@@ -52,7 +51,7 @@ fun FitmetApp() {
             composable("profileDetail") { ProfileDetailScreen(navController, userViewModel) }
             composable("Homemain") { HomeMain(navController, userViewModel, themeViewModel) }
             composable("achievements") { AchievementScreen(navController, userViewModel) } // Uusi navigointireitti
-            composable("steps") { StepStatisticsScreen(navController) }
+            composable("steps") { StepStatisticsScreen(navController, userViewModel) }
             composable("splash") { SplashScreen(navController) }
         }
     }

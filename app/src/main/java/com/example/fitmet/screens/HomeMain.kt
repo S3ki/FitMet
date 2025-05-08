@@ -35,8 +35,6 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
     val context = LocalContext.current
     var steps by remember { mutableStateOf<Long?>(null) }
 
-
-
     LaunchedEffect(Unit) {
         val counter = StepCounter(context)
         steps = counter.steps()
@@ -71,6 +69,7 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
 
                     IconButton(onClick = {
                         viewModel.isLoggedIn = false
+                        viewModel.logout()
                         navController.navigate("login") {
                             popUpTo("Homemain") { inclusive = true }
                         }
@@ -108,9 +107,6 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
                 navController.navigate("achievements")
             })
 
-            Button(onClick = {
-                viewModel.registering()
-            }) { Text("DB test") }
         }
     }
 }

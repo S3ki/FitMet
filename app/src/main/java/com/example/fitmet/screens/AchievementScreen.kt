@@ -1,10 +1,11 @@
 package com.example.fitmet.screens
 
+import android.content.Context
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.fitmet.R
+import com.example.fitmet.data.Achievement
+import com.example.fitmet.data.FitApp
 import com.example.fitmet.viewmodel.UserViewModel
 
 // Tietoluokka tasoille
@@ -26,8 +29,11 @@ data class LevelInfo(val levelNumber: Int, val distance: Int)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AchievementScreen(navController: NavController, viewModel: UserViewModel) {
-    val userProfile = viewModel.userProfile
-    val progress = userProfile?.distanceCovered ?: 0
+
+    val sharedPref = FitApp.appContext.getSharedPreferences("fit_prefs", Context.MODE_PRIVATE)
+    val userId = sharedPref.getInt("current_user_id", -1)
+
+    val achievementList by viewModel.getAchievementsForUser(userId).collectAsState(initial = emptyList())
 
     Scaffold(
         topBar = {
@@ -52,7 +58,6 @@ fun AchievementScreen(navController: NavController, viewModel: UserViewModel) {
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(horizontal = 16.dp)
-                .verticalScroll(rememberScrollState())
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -75,19 +80,30 @@ fun AchievementScreen(navController: NavController, viewModel: UserViewModel) {
                 LevelInfo(5, 25)
             )
 
-            levels.forEach { levelInfo ->
-                val achieved = progress >= levelInfo.distance
-                AchievementCard(levelInfo = levelInfo, achieved = achieved)
-                Spacer(modifier = Modifier.height(16.dp))
+            LazyColumn(
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(achievementList) { ach ->
+                    val achieved = ach.achieved
+                    AchievementCard(ach, achieved = achieved)
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
 
-            Spacer(modifier = Modifier.height(80.dp)) // Jotta alin kortti ei mene napin alle
+//            levels.forEach { levelInfo ->
+//                val achieved = 30 >= levelInfo.distance
+//                AchievementCard(levelInfo = levelInfo, achieved = achieved)
+//                Spacer(modifier = Modifier.height(16.dp))
+//            }
+
+            Spacer(modifier = Modifier.height(80.dp))
         }
     }
 }
 
 @Composable
-fun AchievementCard(levelInfo: LevelInfo, achieved: Boolean) {
+fun AchievementCard(achievement: Achievement, achieved: Boolean) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -110,12 +126,12 @@ fun AchievementCard(levelInfo: LevelInfo, achieved: Boolean) {
                 modifier = Modifier.padding(vertical = 16.dp)
             ) {
                 Text(
-                    text = "Level ${levelInfo.levelNumber}:",
+                    text = "Level ${achievement.level}:",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     color = if (achieved) MaterialTheme.colorScheme.primary else Color.Gray
                 )
                 Text(
-                    text = "Reach ${levelInfo.distance} km",
+                    text = "Reach ${achievement.desc} ",
                     style = MaterialTheme.typography.bodyMedium,
                     color = if (achieved) MaterialTheme.colorScheme.primary else Color.Gray
                 )

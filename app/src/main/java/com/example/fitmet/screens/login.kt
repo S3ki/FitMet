@@ -10,12 +10,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.fitmet.viewmodel.UserViewModel
 import androidx.compose.ui.Alignment
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun LoginScreen(navController: NavController, viewModel: UserViewModel) {
+    val coroutineScope = rememberCoroutineScope()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Card(
@@ -48,12 +52,13 @@ fun LoginScreen(navController: NavController, viewModel: UserViewModel) {
 
                 Button(
                     onClick = {
-                        viewModel.registeredEmail = email
-                        viewModel.registeredPassword = password
-                        viewModel.login()
-                        if (viewModel.isLoggedIn) {
-                            navController.navigate("Homemain") {
-                                popUpTo("login") { inclusive = true }
+                        coroutineScope.launch {
+
+                            viewModel.login(email, password)
+                            if (viewModel.isLoggedIn) {
+                                navController.navigate("Homemain") {
+                                    popUpTo("login") { inclusive = true }
+                                }
                             }
                         }
                     },
