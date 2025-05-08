@@ -3,10 +3,7 @@ package com.example.fitmet.data
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
@@ -15,7 +12,6 @@ import java.util.concurrent.TimeUnit
 class FitApp : Application() {
     companion object {
         lateinit var appContext: Context
-        lateinit var currentUser: User
         }
 
     override fun onCreate() {
@@ -35,8 +31,6 @@ class FitApp : Application() {
             request
         )
 
-//        val request = OneTimeWorkRequestBuilder<SaveDataWorker>().build()
-//        WorkManager.getInstance(context).enqueue(request)
     }
 
 }

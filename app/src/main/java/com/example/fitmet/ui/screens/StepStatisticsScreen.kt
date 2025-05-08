@@ -1,12 +1,10 @@
-package com.example.fitmet.screens
+package com.example.fitmet.ui.screens
 
 import android.content.Context
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -155,7 +153,7 @@ fun ShowLineGraph(values: List<Entry>) {
             val data = LineData(LineDataSet(values, "steps"))
             val desc = Description()
             desc.text = "Steps this week"
-            view.description = desc;
+            view.description = desc
             view.data = data
             view // return the view
         },

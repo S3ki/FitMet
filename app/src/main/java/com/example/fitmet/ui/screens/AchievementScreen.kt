@@ -1,4 +1,4 @@
-package com.example.fitmet.screens
+package com.example.fitmet.ui.screens
 
 import android.content.Context
 import androidx.compose.animation.core.*
@@ -23,8 +23,7 @@ import com.example.fitmet.data.Achievement
 import com.example.fitmet.data.FitApp
 import com.example.fitmet.viewmodel.UserViewModel
 
-// Tietoluokka tasoille
-data class LevelInfo(val levelNumber: Int, val distance: Int)
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +32,8 @@ fun AchievementScreen(navController: NavController, viewModel: UserViewModel) {
     val sharedPref = FitApp.appContext.getSharedPreferences("fit_prefs", Context.MODE_PRIVATE)
     val userId = sharedPref.getInt("current_user_id", -1)
 
-    val achievementList by viewModel.getAchievementsForUser(userId).collectAsState(initial = emptyList())
+    val achievementList by viewModel.getAchievementsForUser(userId)
+        .collectAsState(initial = emptyList())
 
     Scaffold(
         topBar = {
@@ -72,14 +72,6 @@ fun AchievementScreen(navController: NavController, viewModel: UserViewModel) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            val levels = listOf(
-                LevelInfo(1, 5),
-                LevelInfo(2, 10),
-                LevelInfo(3, 15),
-                LevelInfo(4, 20),
-                LevelInfo(5, 25)
-            )
-
             LazyColumn(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -90,12 +82,6 @@ fun AchievementScreen(navController: NavController, viewModel: UserViewModel) {
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
-
-//            levels.forEach { levelInfo ->
-//                val achieved = 30 >= levelInfo.distance
-//                AchievementCard(levelInfo = levelInfo, achieved = achieved)
-//                Spacer(modifier = Modifier.height(16.dp))
-//            }
 
             Spacer(modifier = Modifier.height(80.dp))
         }

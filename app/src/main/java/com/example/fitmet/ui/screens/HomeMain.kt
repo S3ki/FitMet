@@ -1,4 +1,4 @@
-package com.example.fitmet.screens
+package com.example.fitmet.ui.screens
 
 import StepCounter
 import androidx.compose.animation.core.animateDpAsState
@@ -29,7 +29,11 @@ import com.example.fitmet.viewmodel.ThemeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewModel: ThemeViewModel) {
+fun HomeMain(
+    navController: NavController,
+    viewModel: UserViewModel,
+    themeViewModel: ThemeViewModel
+) {
     val user = viewModel.userProfile
 
     val context = LocalContext.current
@@ -88,7 +92,7 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
 
-        ) {
+            ) {
             Text(
                 text = "Päivän Yhteenveto",
                 style = MaterialTheme.typography.headlineSmall,
@@ -97,13 +101,13 @@ fun HomeMain(navController: NavController, viewModel: UserViewModel, themeViewMo
 
             // UI Kortit
 
-            StatCard("🔥 Kalorit", "1800 kcal", )
+            StatCard("🔥 Kalorit", "${calculateCalories(steps ?: 0, user.weight.toDouble()).toInt()}")
 
             StatCard("👟 Askeleet", (steps ?: 0).toString(), onClick = {
                 navController.navigate("steps")
             })
 
-            StatCard("⏱️ Saavutukset", "10 kpl", onClick = {
+            StatCard("⏱️ Saavutukset", "LVL UP", onClick = {
                 navController.navigate("achievements")
             })
 
@@ -153,4 +157,16 @@ fun StatCard(title: String, value: String, onClick: (() -> Unit)? = null) {
             )
         }
     }
+}
+
+fun calculateCalories(steps: Long, weightInKg: Double): Double {
+    val caloriesPerStep = 0.04 // This is an estimate for an average person
+
+    // Calories burned = number of steps * calories per step
+    val caloriesBurned = steps * caloriesPerStep
+
+    // Optional: Adjust the formula for weight if necessary
+    val adjustedCaloriesBurned = caloriesBurned * (weightInKg / 70)
+
+    return adjustedCaloriesBurned
 }

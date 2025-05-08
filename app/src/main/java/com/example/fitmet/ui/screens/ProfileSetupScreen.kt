@@ -1,4 +1,4 @@
-package com.example.fitmet.screens
+package com.example.fitmet.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells

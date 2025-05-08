@@ -21,6 +21,4 @@ data class User(
     val fitnessGoal: String = "",
     // Maybe list of badges object here later
     // and some other info
-){
-
-}
+)

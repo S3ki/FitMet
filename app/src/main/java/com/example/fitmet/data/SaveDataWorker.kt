@@ -11,7 +11,6 @@ import java.time.LocalDate
 class SaveDataWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
     private val stepsRepo = StepsRepository(FitDatabase.getDatabase().stepsDao())
     private var counter = StepCounter(FitApp.appContext)
-    val stepCounter = StepCounter(context)
 
 
     private val sharedPref = FitApp.appContext.getSharedPreferences("fit_prefs", Context.MODE_PRIVATE)
@@ -22,9 +21,7 @@ class SaveDataWorker(context: Context, params: WorkerParameters) : CoroutineWork
 
         return try {
             Log.d("SVD1", "Worker triggered at ${System.currentTimeMillis()}")
-//            stepsRepo.insertSteps(Steps(0,userId, LocalDate.now().toString(), counter.steps().toInt()))
-//            stepsRepo.insertSteps(Steps(0,4, "2025-05-06", 10))
-
+            stepsRepo.insertSteps(Steps(0,userId, LocalDate.now().toString(), counter.steps().toInt()))
             Result.success()
         } catch (e: Exception) {
             e.printStackTrace()

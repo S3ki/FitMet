@@ -1,7 +1,6 @@
 package com.example.fitmet.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitmet.data.Achievement
@@ -11,7 +10,6 @@ import com.example.fitmet.data.Steps
 import com.example.fitmet.data.StepsRepository
 import com.example.fitmet.data.User
 import com.example.fitmet.models.UserProfile
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -20,7 +18,7 @@ class UserViewModel : ViewModel() {
     private val stepsRepo = StepsRepository(FitDatabase.getDatabase().stepsDao())
 
     lateinit var userProfile: UserProfile
-    var currentUser : User? = null
+    private var currentUser : User? = null
     var registeredEmail = ""
     var registeredPassword = ""
     var isLoggedIn = false
@@ -50,10 +48,13 @@ class UserViewModel : ViewModel() {
                 currentUser = user
                 // Tallentaa nykyisen käyttäjän id SharedPref
                 offlineRepo.saveCurrentUserId(user.id)
-//                offlineRepo.insertAchievement(Achievement(0,user.id,true, 2, "Walk 300 Steps"))
+
+
             } else {
                 Log.d("UserD", "Current user is null")
             }
+
+
         }
     }
 
@@ -63,7 +64,7 @@ class UserViewModel : ViewModel() {
 
      fun registering(){
          currentUser = User(
-             0, registeredEmail.toString(), offlineRepo.hashPassword(registeredPassword.toString()),
+             0, registeredEmail, offlineRepo.hashPassword(registeredPassword),
              name = userProfile.name,
              age = userProfile.age,
              height = userProfile.height,
