@@ -11,13 +11,14 @@
 Whether you're just starting your fitness journey or aiming to stay consistent, **Fitmet** makes every step count—literally.
 
 ## Requirements
+
 - **Minimum Android Version**: Android 4.4 (API level 19 – KitKat)
 - **Hardware Requirements**:
   - Device must include a **Step Counter Sensor** (`Sensor.TYPE_STEP_COUNTER`)
-    - Not all devices running Android 4.4+ support this sensor
-    - The app checks for sensor availability at runtime
+    - If your device doesn't support this sensor, step tracking features will be disabled or unavailable.
 - **Permissions**:
   - Access to physical activity (required on Android 10 and above)
+> ⚠️ Make sure your device meets the [requirements](#requirements) before running the app.
 
     
 ## Installation
