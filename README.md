@@ -1,12 +1,8 @@
 # Fitmet 🏃
+
+
 **Fitmet** is a motivational step-tracking app designed to **encourage daily movement** through a positive, visually engaging experience. It tracks your steps in real time and boosts your motivation with:
 
-![Platform](https://img.shields.io/badge/platform-Android-blue)
-![Language](https://img.shields.io/badge/language-Kotlin-orange)
-![UI](https://img.shields.io/badge/UI-Jetpack%20Compose-7950F2?logo=android)
-![WorkManager](https://img.shields.io/badge/WorkManager-Task%20Scheduling-00C853?logo=android)
-![MPAndroidChart](https://img.shields.io/badge/MPAndroidChart-Charting-00796B?logo=chart)
-![Room](https://img.shields.io/badge/Room-Local%20Storage-FF7043?logo=android)
 
 - **Encouraging messages**
 - **Clean and uplifting UI**
@@ -38,6 +34,12 @@ To install and run the app from the source code:
 The application is structured using the **MVVM (Model-View-ViewModel)** architecture to ensure a clear separation between the user interface and business logic.
 
 ### Key Technologies and Components
+![Platform](https://img.shields.io/badge/platform-Android-blue)
+![Language](https://img.shields.io/badge/language-Kotlin-orange)
+![UI](https://img.shields.io/badge/UI-Jetpack%20Compose-7950F2?logo=android)
+![WorkManager](https://img.shields.io/badge/WorkManager-Task%20Scheduling-00C853?logo=android)
+![MPAndroidChart](https://img.shields.io/badge/MPAndroidChart-Charting-00796B?logo=chart)
+![Room](https://img.shields.io/badge/Room-Local%20Storage-FF7043?logo=android)
 
 - **Jetpack Compose**: Used to build a modern, declarative UI.
 - **SensorManager & Sensor Service**: Accesses and processes real-time data from device sensors.
